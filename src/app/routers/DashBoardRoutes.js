@@ -4,13 +4,20 @@ import {Route, Switch, Redirect} from 'react-router-dom';
 import MarvelPage from '../components/marvel/MarvelPage';
 import HeroPage from '../components/heroes/HeroPage';
 import DcPage from '../components/dc/DcPage';
+import Search from '../components/search/Search';
+import AllHeroePage from '../components/all-heroes/AllHeroePage';
 
 export function DashBoardRoutes() {
     return (
         <>
             <Navbar/>
-            <div>
+            <div className="container mt-5">
                 <Switch>
+                    <Route
+                        exact={true}
+                        path="/all"
+                        component={AllHeroePage}
+                    />
                     <Route
                         exact={true}
                         path="/marvel"
@@ -26,7 +33,12 @@ export function DashBoardRoutes() {
                         path="/dc"
                         component={DcPage}
                     />
-                    <Redirect to="/marvel"/>
+                    <Route
+                        exact={true}
+                        path="/buscar"
+                        component={Search}
+                    />
+                    <Redirect to="/all"/>
                 </Switch>
             </div>
         </>
