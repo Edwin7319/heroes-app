@@ -1,13 +1,38 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import useForm from '../../hooks/useForm';
+import {typesApp} from '../../types/types';
+import {AuthContext} from '../../auth/AuthContext';
 
 export default function Login({history}) {
 
+    const lastPath = localStorage.getItem('lastPath') || '/';
+
+    const [{name}, handleInputChange, resetForm] = useForm({
+        name: '',
+    });
+
+    const {dispatch} = useContext(AuthContext);
+
+    const {login} = typesApp;
+
     const handleLogin = () => {
         // Mantiene el historial del navegador
-        history.push('/');
+        // history.push('/');
 
         // Elimina el historial del navegador
-        history.replace('/');
+        // history.replace('/');
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        dispatch({
+            type: login,
+            payload: {
+                name
+            },
+        });
+        resetForm();
+        history.replace(lastPath);
     }
 
     return (
@@ -17,14 +42,23 @@ export default function Login({history}) {
                     <div className="col-sm-8 mx-auto text-center">
                         <h2>LOGIN</h2>
                         <hr/>
-                    </div>
-                    <div className="col-sm-6 mx-auto">
-                        <button
-                            className="btn btn-sm btn-success btn-block"
-                        onClick={handleLogin}
-                        >
-                            LOGGIN
-                        </button>
+                        <form onSubmit={handleSubmit}>
+                            <input
+                                type="text"
+                                name="name"
+                                className="form-control"
+                                placeholder="EJ: USER ABC"
+                                autoComplete="off"
+                                value={name}
+                                onChange={handleInputChange}
+                            />
+                            <button
+                                type="submit"
+                                className="btn btn-sm btn-success btn-block mt-3"
+                            >
+                                LOGGIN
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
